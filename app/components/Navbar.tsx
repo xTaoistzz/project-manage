@@ -1,29 +1,30 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-export default function Navbar() {
+const Navbar: React.FC = () => {
   return (
-    <>
-      <div className="w-full h-20 bg-blue-950 sticky top-0">
-        <div className="container mx-auto px-4 h-full">
-          <div className="flex justify-between items-center h-full">
-            <Link href="/">
-              <div className="text-white font-semibold text-xl">||| OLAWA</div>
-            </Link>
-
-            <ul className="hidden md:flex gap-x-6 text-white">
-              <li>
-                <Link href="/project/create">Project</Link>
-              </li>
-              <li>
-                <Link href="/auth/register">Sign-Up</Link>
-              </li>
-              <li>
-                <Link href="/auth/login">Sign-In</Link>
-              </li>
-            </ul>
-          </div>
+    <nav className="bg-blue-900 p-4 flex justify-between items-center">
+      <div>
+        <span className="text-white text-lg font-bold">AIWA</span>
+      </div>
+      <div className="flex space-x-4">
+        <div className="nav-item">
+          <Link href="/project">
+            <div className="text-white cursor-pointer hover:bg-blue-800 transition duration-200 rounded px-2 py-1">Projects</div>
+          </Link>
+        </div>
+        <div className="nav-item">
+          <Link href="/auth/login">
+            <div className="text-white cursor-pointer hover:bg-blue-800 transition duration-200 rounded px-2 py-1">Sign In</div>
+          </Link>
+        </div>
+        <div className="nav-item">
+          <Link href="/auth/register">
+            <div className="text-white cursor-pointer hover:bg-blue-800 transition duration-200 rounded px-2 py-1">Sign Up</div>
+          </Link>
         </div>
       </div>
-    </>
+    </nav>
   );
-}
+};
+
+export default Navbar;

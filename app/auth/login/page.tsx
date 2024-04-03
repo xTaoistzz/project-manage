@@ -8,12 +8,12 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [response, setResponse] = useState('');
-  const router = useRouter()
+  const router = useRouter();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
-      const { data } = await axios.post(`https://baiat.wattanapong.com/login`, { username, password }, {withCredentials: true});
+      const { data } = await axios.post(`${process.env.BACK_URL}/login`, { username, password }, {withCredentials: true});
+      router.push('/project')
     } catch (error) {
       console.error('Error:', error);
     }

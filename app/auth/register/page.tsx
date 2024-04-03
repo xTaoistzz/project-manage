@@ -1,111 +1,93 @@
-"use client";
+"use client"
 
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { use, useState } from "react";
-import dotenv from "dotenv"
-dotenv.config()
+import { useState } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
-const Register = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [comPassword, setComPassword] = useState("");
-  const router = useRouter;
+const Register: React.FC = () => {
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    comPassword: ''
+  });
+
+  const router = useRouter();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const Register = await axios.post(`https://baiat.wattanapong.com/register`, { username, email, password, comPassword });
-      Response.json(Register)
+      const response = await axios.post(`${process.env.BACK_URL}/register`, formData);
+      console.log(response.data); // Handle success response
+      // Redirect to login page
+      router.push('/auth/login');
     } catch (error) {
-      console.error(error);
+      console.error('Error:', error); // Handle error
     }
   };
+
   return (
-    <>
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-2xl font-semibold mb-6">Registration</h1>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Username
-            </label>
+    <div className="bg-gray-100 min-h-screen flex flex-col justify-center items-center">
+      <div className="bg-white p-8 rounded shadow-md w-96">
+        <h2 className="text-2xl font-bold mb-4">Register</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
             <input
               type="text"
               name="username"
-              id="username"
-              required
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              value={formData.username}
+              onChange={handleChange}
+              placeholder="Username"
+              className="border border-gray-300 rounded px-3 py-2 w-full"
             />
           </div>
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email
-            </label>
+          <div className="mb-4">
             <input
-              type="text"
+              type="email"
               name="email"
-              id="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email"
+              className="border border-gray-300 rounded px-3 py-2 w-full"
             />
           </div>
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
+          <div className="mb-4">
             <input
               type="password"
               name="password"
-              id="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Password"
+              className="border border-gray-300 rounded px-3 py-2 w-full"
             />
           </div>
-          <div>
-            <label
-              htmlFor="comPassword"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Confirm Password
-            </label>
+          <div className="mb-4">
             <input
               type="password"
               name="comPassword"
-              id="comPassword"
-              required
-              value={comPassword}
-              onChange={(e) => setComPassword(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              value={formData.comPassword}
+              onChange={handleChange}
+              placeholder="Confirm Password"
+              className="border border-gray-300 rounded px-3 py-2 w-full"
             />
           </div>
-          <div>
           <button
             type="submit"
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
           >
-            Submit
+            Register
           </button>
-        </div>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 
