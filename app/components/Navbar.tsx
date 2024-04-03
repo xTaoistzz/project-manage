@@ -12,7 +12,7 @@ export default function Navbar() {
 
             <ul className="hidden md:flex gap-x-6 text-white">
               <li>
-                <Link href="/project">Project</Link>
+                <Link href="/project/create">Project</Link>
               </li>
               <li>
                 <Link href="/auth/register">Sign-Up</Link>

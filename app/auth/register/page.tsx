@@ -3,6 +3,8 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { use, useState } from "react";
+import dotenv from "dotenv"
+dotenv.config()
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -14,7 +16,7 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const Register = await axios.post("/api/auth", { username, email, password });
+      const Register = await axios.post(`https://baiat.wattanapong.com/register`, { username, email, password, comPassword });
       Response.json(Register)
     } catch (error) {
       console.error(error);

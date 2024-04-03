@@ -15,7 +15,7 @@ const Create = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/createProject", { project_name, description } , {withCredentials : true});
+      await axios.post(`https://baiat.wattanapong.com/createProject`, { project_name, description } , {withCredentials : true});
     } catch (error) {
       console.error(error);
     }

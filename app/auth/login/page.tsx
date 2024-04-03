@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import React, { use, useState } from "react";
 
 
@@ -8,13 +8,12 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [response, setResponse] = useState('');
-
-  const handleSubmit = async (e) => {
+  const router = useRouter()
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post('http://localhost:5000/login', { username, password });
-      setResponse(data);
+      const { data } = await axios.post(`https://baiat.wattanapong.com/login`, { username, password }, {withCredentials: true});
     } catch (error) {
       console.error('Error:', error);
     }
