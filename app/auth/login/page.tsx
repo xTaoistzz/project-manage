@@ -4,14 +4,14 @@ import { useRouter } from "next/navigation";
 import React, { use, useState } from "react";
 
 const Login = () => {
-    const [email, setEmail] = useState("");
+    const [username, setusername] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const Login = await axios.post("http://localhost:3000", { email, password })
+            const Login = await axios.post("http://localhost:5000/login", { username, password } , {withCredentials : true})
         } catch (error) {
             console.error(error);
         }
@@ -23,18 +23,18 @@ const Login = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label
-              htmlFor="email"
+              htmlFor="username"
               className="block text-sm font-medium text-gray-700"
             >
-              Email
+              username
             </label>
             <input
               type="text"
-              name="email"
-              id="email"
+              name="username"
+              id="username"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setusername(e.target.value)}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
