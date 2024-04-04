@@ -9,7 +9,7 @@ const Register: React.FC = () => {
     username: '',
     email: '',
     password: '',
-    comPassword: ''
+    conPassword: ''
   });
 
   const router = useRouter();
@@ -72,8 +72,8 @@ const Register: React.FC = () => {
           <div className="mb-4">
             <input
               type="password"
-              name="comPassword"
-              value={formData.comPassword}
+              name="conPassword"
+              value={formData.conPassword}
               onChange={handleChange}
               placeholder="Confirm Password"
               className="border border-gray-300 rounded px-3 py-2 w-full"
