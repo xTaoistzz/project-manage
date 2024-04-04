@@ -7,16 +7,17 @@ import { useRouter } from "next/navigation";
 
 const Create = () => {
   const [project_name, setTitle] = useState("");
-  const [type, setType] = useState("");
+
   const [description, setDescription] = useState("");
-  const router = useRouter();
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post(`${process.env.BACK_URL}/createProject`, { project_name, description } , {withCredentials : true});
+      await axios.post(`${process.env.BACK_URL}/create/project`, { project_name, description } , {withCredentials : true});
     } catch (error) {
-      console.error(error);
+      console.log(error);
+      alert(error);
     }
   };
   return (

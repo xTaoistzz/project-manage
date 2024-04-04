@@ -39,6 +39,7 @@ const Register: React.FC = () => {
       <div className="bg-white p-8 rounded shadow-md w-96">
         <h2 className="text-2xl font-bold mb-4">Register</h2>
         <form onSubmit={handleSubmit}>
+        <label htmlFor="password" className="block text-sm font-medium text-gray-700">Username</label>
           <div className="mb-4">
             <input
               type="text"
@@ -46,9 +47,11 @@ const Register: React.FC = () => {
               value={formData.username}
               onChange={handleChange}
               placeholder="Username"
+              required
               className="border border-gray-300 rounded px-3 py-2 w-full"
             />
           </div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700">Email</label>
           <div className="mb-4">
             <input
               type="email"
@@ -56,9 +59,11 @@ const Register: React.FC = () => {
               value={formData.email}
               onChange={handleChange}
               placeholder="Email"
+              required
               className="border border-gray-300 rounded px-3 py-2 w-full"
             />
           </div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
           <div className="mb-4">
             <input
               type="password"
@@ -66,9 +71,11 @@ const Register: React.FC = () => {
               value={formData.password}
               onChange={handleChange}
               placeholder="Password"
+              required
               className="border border-gray-300 rounded px-3 py-2 w-full"
             />
           </div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700">Confirm Password</label>
           <div className="mb-4">
             <input
               type="password"
@@ -76,6 +83,7 @@ const Register: React.FC = () => {
               value={formData.conPassword}
               onChange={handleChange}
               placeholder="Confirm Password"
+              required
               className="border border-gray-300 rounded px-3 py-2 w-full"
             />
           </div>

@@ -8,14 +8,23 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [response, setResponse] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const { data } = await axios.post(`${process.env.BACK_URL}/login`, { username, password }, {withCredentials: true});
+      
+      setErrorMessage('');
+
+      // Show success message
+      alert('Sign in successful!');
+
+      // Redirect to home page
       router.push('/project')
     } catch (error) {
-      console.error('Error:', error);
+      // Handle error
+      alert('Invalid username or password')
     }
   };
 
@@ -25,10 +34,13 @@ const Login = () => {
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
         <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
-        <input 
+        <input
+
           id="username"
           type="text"
+          placeholder="กรอกชื่อผู้ใช้งาน"
           value={username}
+          required
           onChange={(e) => setUsername(e.target.value)}
           className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm"
         />
@@ -39,6 +51,8 @@ const Login = () => {
           id="password"
           type="password"
           value={password}
+          placeholder="กรอกรหัสผ่าน"
+          required
           onChange={(e) => setPassword(e.target.value)}
           className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm"
         />

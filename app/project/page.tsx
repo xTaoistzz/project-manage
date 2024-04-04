@@ -42,6 +42,11 @@ const Projects: React.FC = () => {
             </div>
           ))}
         </div>
+        <div className="mt-4 flex justify-end">
+          <Link href="/project/create">
+            <div className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Create Project</div>
+          </Link>
+        </div>
       </div>
     </div>
   );
