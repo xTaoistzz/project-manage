@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 const Home: React.FC = () => {
+  const arr = ['bobby', 'hadz', 'com']
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col justify-center items-center">
       <h1 className="text-4xl font-bold mb-4">Welcome to AIWA!</h1>
