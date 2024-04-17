@@ -15,7 +15,7 @@ const Detection = () => {
       });
       formData.append('idproject', idProject); 
 
-      const response = await axios.post('http://localhost:5000/uploadImage', formData, {
+      const response = await axios.post(`${process.env.BACK_URL}/uploadImage`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
