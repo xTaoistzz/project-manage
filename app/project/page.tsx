@@ -9,9 +9,11 @@ export default function Home() {
 
   const fetchProjects = async () => {
     try {
-        const response = await axios.get(`${process.env.BACK_URL}/allProject`, {withCredentials: true})
-        setData(response.data)
-        console.log(response.data)
+      const response = await axios.get(`${process.env.BACK_URL}/allProject`, {
+        withCredentials: true,
+      });
+      setData(response.data.project);
+      console.log(response.data.project);
     } catch (error) {
       console.log("error", error);
     }
@@ -44,10 +46,7 @@ export default function Home() {
                 <th
                   scope="col"
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                 
-                </th>
-
+                ></th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -65,8 +64,17 @@ export default function Home() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">
-                      <Link href="project/edit/{item.idproject}" target="_blank">Edit</Link> | 
-                      <Link href="project/delete/{item.idproject}" target="_blank">Delete</Link>
+                      <Link href={`/project/edit/${item.idproject}`}>
+                        <div className="text-blue-500 hover:text-blue-700">
+                          Edit
+                        </div>
+                      </Link>
+                      <Link
+                        href="project/delete/{item.idproject}"
+                        target="_blank"
+                      >
+                        Delete
+                      </Link>
                     </div>
                   </td>
                 </tr>
@@ -84,3 +92,50 @@ export default function Home() {
     </>
   );
 }
+
+// "use client";
+
+// import React, { useEffect, useState } from "react";
+// import axios from "axios";
+
+// const Projects = () => {
+//   const [projects, setProjects] = useState("");
+
+//   useEffect(() => {
+//     const fetchProjectsData = async () => {
+//       try {
+//         const response = await axios.get(`${process.env.BACK_URL}/allProject`, {
+//           withCredentials: true,
+//         }); // เปลี่ยนเส้นทางตามความเหมาะสม
+//         setProjects(response.data.project);
+//         console.error("Failed to get projects:", response.data.message);
+//       } catch (error) {
+//         console.error("Error fetching projects:", error);
+//       }
+//     };
+
+//     fetchProjectsData();
+//   }, []);
+
+//   return (
+//     <div>
+//       <h1 className="text-2xl font-bold mb-4">Projects</h1>
+//       <div className="grid grid-cols-2 gap-4">
+//         {projects.map((data) => (
+//           <div
+//             className="bg-white p-4 rounded border border-gray-300"
+//             key={data.idproject}
+//           >
+//             <h2 className="text-lg font-semibold mb-2">
+//               {data.project_name}
+//             </h2>
+//             <p className="text-gray-600">{data.description}</p>
+//             <p className="text-gray-600">{data.root_path}</p>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Projects;

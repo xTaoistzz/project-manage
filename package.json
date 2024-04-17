@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.11.0",
+    "@tensorflow/tfjs": "^4.17.0",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
     "js-cookie": "^3.0.5",
