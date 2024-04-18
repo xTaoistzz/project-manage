@@ -2,7 +2,7 @@
 import axios from "axios";
 import { redirect, useRouter } from "next/navigation";
 import React, { use, useState } from "react";
-
+import Cookies from "js-cookie";
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -17,6 +17,7 @@ const Login = () => {
       
       setErrorMessage('');
 
+      Cookies.set('username', username)
       // Show success message
       alert('Sign in successful!');
 
@@ -24,7 +25,10 @@ const Login = () => {
       router.push('/project')
     } catch (error) {
       // Handle error
-      alert('Invalid username or password')
+      let alertmsg = error.response.data
+      console.log(alertmsg.message)
+      let label = document.getElementById("msg-login");
+      label.innerHTML = alertmsg.message
     }
   };
 
@@ -56,6 +60,9 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm"
         />
+      </div >
+      <div className="mb-1 text-center">
+      <label id="msg-login" htmlFor="Alert" className="block text-sm font-medium text-red-700"></label>
       </div>
       <button 
         type="submit"
