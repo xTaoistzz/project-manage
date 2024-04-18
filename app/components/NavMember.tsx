@@ -3,10 +3,11 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const NavMember: React.FC = () => {
     const router = useRouter();
-    const handleLogout = () => {
+    const handleLogout = async () => {
         Cookies.remove('username');
         router.push('/');
     };

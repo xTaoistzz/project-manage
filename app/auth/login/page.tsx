@@ -22,13 +22,15 @@ const Login = () => {
       alert('Sign in successful!');
 
       // Redirect to home page
-      router.push('/project')
+      window.location='/project'
+      //router.push('/project')
     } catch (error) {
       // Handle error
       let alertmsg = error.response.data
       console.log(alertmsg.message)
-      let label = document.getElementById("msg-login");
-      label.innerHTML = alertmsg.message
+      setErrorMessage(alertmsg.message)
+      // let label = document.getElementById("msg-login");
+      // label.innerHTML = alertmsg.message
     }
   };
 
@@ -62,7 +64,7 @@ const Login = () => {
         />
       </div >
       <div className="mb-1 text-center">
-      <label id="msg-login" htmlFor="Alert" className="block text-sm font-medium text-red-700"></label>
+      <label id="msg-login" htmlFor="Alert" className="block text-sm font-medium text-red-700">{errorMessage}</label>
       </div>
       <button 
         type="submit"

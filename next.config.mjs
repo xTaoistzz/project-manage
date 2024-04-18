@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     env: {
-        BACK_URL : 'https://baiat.wattanapong.com'
+        BACK_URL : 'http://localhost:5000'
     }
 };
 
