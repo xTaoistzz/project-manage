@@ -9,6 +9,7 @@ const NavMember: React.FC = () => {
     const router = useRouter();
     const handleLogout = async () => {
         Cookies.remove('username');
+        axios.get(`${process.env.BACK_URL}/logout`)
         router.push('/');
     };
     return (
