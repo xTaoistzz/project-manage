@@ -95,13 +95,15 @@ const Upload = ({ params }: { params: { id: string } }) => {
 
   const handleUpload = async () => {
     try {
+      const type = 1 //detections
       const formData = new FormData();
       files.forEach(file => {
         formData.append('image', file);
         formData.append('idproject', idproject)
+        formData.append('type', type)
       });
-
-      await axios.post('http://localhost:5000/uploadImage',formData, {withCredentials:true});
+      
+      await axios.post('http://localhost:5000/uploadImage',formData,{withCredentials:true});
       setFiles([]);
     } catch (error) {
       console.error('Error uploading image:', error);
