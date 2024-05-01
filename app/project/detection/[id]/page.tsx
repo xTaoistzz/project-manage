@@ -1,29 +1,40 @@
-"use client"
-import { useEffect, useState } from "react"
-import axios from "axios"
+// pages/YourPage.js
+"use client";
 
-const Detection = ({ params }: { params: { id: any } }) => {
-  const idproject = params.id
-  const [data,setData] = useState('');
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+const Detection = ({ params }: { params: { id: string } }) => {
+  const [images, setImages] = useState([]);
+  const idproject = params.id;
+  const externalImageUrls = [];
   useEffect(() => {
-    const getImg = () => {
-
-    }
-    const fetch = async () => {
+    const fetchExternalImages = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/detection/allDetection/${idproject}`,{withCredentials:true} );
-        setData(response.data.detection)
-        let data = response.data.detection
-        data.forEach((data) => {
-          console.log(data.image_path)
+        const response = await axios.get(
+          `http://localhost:5000/detection/allDetection/${idproject}`,
+          { withCredentials: true }
+        );
+        const data = response.data.detection;
+        data.forEach(async (data) => {
+          externalImageUrls.push(data.image_path);
         });
       } catch (error) {
-        console.error('Error fetching detection data:', error);
+        console.error("Error fetching images:", error);
       }
-      
-    }  
-    fetch();
-  }, [idproject])
-}
+      console.log(externalImageUrls);
+    };
+    fetchExternalImages();
+    putImg();
+  }, []);
+  return (
+    <div>
+      <h1>External Image Display</h1>
+      <div>
 
-export default Detection
+      </div>
+    </div>
+  );
+};
+
+export default Detection;
