@@ -22,7 +22,7 @@ const NavMember: React.FC = () => {
           </div>
           <div className="flex">
             <Link href="/project" className="m-3">
-              <div className="text-white font-semibold text-lg">Projects</div>
+              <button className="p-4 rounded-lg bg-blue-400 hover:bg-blue-500 font-bold text-white shadow-lg shadow-blue-200 transition ease-in-out duration-200 translate-10">Projects</button>
             </Link>          
               <button onClick={handleLogout} className='text-white font-semibold m-3'>Logout</button>
           </div>

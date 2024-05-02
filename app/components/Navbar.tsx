@@ -14,10 +14,10 @@ const Navbar: React.FC = () => {
         </div>
         <div className="flex">
           <Link href="/auth/login" className="m-3">
-            <div className="text-white font-semibold text-lg">Sign-In</div>
+            <div className="p-4 rounded-lg bg-blue-400 hover:bg-blue-500 font-bold text-white shadow-lg shadow-blue-200 transition ease-in-out duration-200 translate-10">Sign-In</div>
           </Link>          
           <Link href="/auth/register" className="m-3">
-            <div className="text-white font-semibold text-lg">Sign-Up</div>
+            <div className="p-4 rounded-lg bg-blue-400 hover:bg-blue-500 font-bold text-white shadow-lg shadow-blue-200 transition ease-in-out duration-200 translate-10">Sign-Up</div>
           </Link>
         </div>
       </div>
