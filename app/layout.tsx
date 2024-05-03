@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import NavMember from "./components/NavMember";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +18,7 @@ export default function RootLayout({
 }) {
   const [authenticated, setAuthenticated] = useState(false)
   useEffect(() => {
-    const isAuthenticated = !!Cookies.get('username');
+    const isAuthenticated = axios.get(`http://localhost:5000/returnUsername`);
     setAuthenticated(isAuthenticated);
   }, []);
   return (
@@ -25,7 +26,7 @@ export default function RootLayout({
       <body>
         {authenticated ? <NavMember/>: <Navbar/>}
           {children}
-        <Footer/>
+        {/* <Footer/> */}
         </body>
     </html>
   )

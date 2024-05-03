@@ -1,15 +1,80 @@
-// pages/YourPage.js
+// // pages/YourPage.js
 "use client";
 
-import React from "react";
-import { useEffect, useState } from "react";
+// import React from "react";
+// import { useEffect, useState } from "react";
+// import axios from "axios";
+// import ImageGallery from "@/app/components/ImgManage/ImgGallery";
+// import BoundingBox from "@/app/components/BDBox";
+
+// const Detection = ({ params }) => {
+//   const [active, setActive] = useState("");
+//   const [images, setImages] = useState([]);
+//   const idproject = params.id;
+//   useEffect(() => {
+//     const fetchExternalImages = async () => {
+//       try {
+//         const response = await axios.get(
+//           `http://localhost:5000/detection/allDetection/${idproject}`,
+//           { withCredentials: true }
+//         );
+//         const data = response.data.detection;
+//         console.log(data);
+//         const externalImageUrls = data.map((img) => {
+//           return `http://localhost:5000/img/${idproject}/thumbs/${img.image_path}`;
+//         });
+//         setImages(externalImageUrls);
+//       } catch (error) {
+//         console.error("Error fetching images:", error);
+//       }
+//     };
+//     fetchExternalImages();
+//   }, []);
+//   const imageUrl = `http://localhost:5000/img/${idproject}/images/00000015.png`;
+//   return (
+//     <div className="grid grid-rows-4">
+//       <div className="row-span-3">
+//         <div className="grid grid-cols-6 gap-4 w-full p-3 h-screen">
+//           <div className="col-span-1 border-red-950 border-8">This is Menu</div>
+//           <div className="col-span-5 border-blue-950 border-8 flex justify-center items-center">
+//             <div className="text-center">
+//               Show Image Section
+//               <BoundingBox imageUrl={active.replace("thumbs","images")} />
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//       <div className="fixed p-3 left-0 bottom-0 w-full text-center bg-blue-950">
+//         <div className="flex overflow-x-auto overflow-hidden rounded-lg shadow-lg cursor-pointer ">
+//           {images.map((url, index) => (
+//             <img
+//               onClick={() => setActive(url)}
+//               key={index}
+//               src={url}
+//               className="rounded-lg shadow-lg h-auto m-1 object-cover w-32"
+//               alt={`Image ${index + 1}`}
+//             />
+//           ))}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Detection;
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ImageGallery from "@/app/components/ImgManage/ImgGallery";
 import BoundingBox from "@/app/components/BDBox";
+import Image from "next/image";
 
 const Detection = ({ params }) => {
+  const [active, setActive] = useState("");
   const [images, setImages] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0); // State เก็บหน้าปัจจุบัน
+
   const idproject = params.id;
+
   useEffect(() => {
     const fetchExternalImages = async () => {
       try {
@@ -28,31 +93,62 @@ const Detection = ({ params }) => {
       }
     };
     fetchExternalImages();
-  }, []);
-  const imageUrl = "http://localhost:5000/img/8/images/00000015.png";
+  }, [idproject]);
+
+  // ฟังก์ชันเปลี่ยนหน้า
+  const goToPage = (page) => {
+    setCurrentPage(page);
+  };
+
+  // จำนวนรูปภาพต่อหน้า
+  const imagesPerPage = 15;
+  const startIndex = currentPage * imagesPerPage;
+  const endIndex = startIndex + imagesPerPage;
+  const visibleImages = images.slice(startIndex, endIndex);
+
   return (
-    <div className="grid grid-cols-1 gap-4 transition-[grid-template-columns] lg:grid-cols-[120px_1fr] lg:gap-8 lg:[&:has(>*:first-child:hover)]:grid-cols-[160px_1fr]">
-      <div className="bg-blue-500 rounded-lg bg-gray-200"></div>
-      <div className="grid gap-4 text-center object-center rounded-lg bg-gray-200">
-        <div className="p-5 flex justify-center items-center min-h-5xl font-bold">
-          <BoundingBox imageUrl={imageUrl} />
-        </div>
-        <div className=" min-h-xl flex flex-col justify-center items-center bg-gray-100">
-          <div className="mx-auto p-8">
-            <h1 className="text-2xl font-bold mb-4">Select Image : </h1>
-            {images.length > 0 ? (
-              <ImageGallery imageUrls={images} />
-            ) : (
-              <p className="text-center">Loading...</p>
-            )}
+    <div className="grid grid-rows-4">
+      <div className="row-span-3">
+        <div className="grid grid-cols-6 gap-4 w-full p-3 h-screen">
+          <div className="col-span-1 border-red-950 border-8">This is Menu</div>
+          <div className="col-span-5 border-blue-950 border-8 flex justify-center items-center">
+            <div className="text-center">
+              Show Image Section
+              {active && <BoundingBox imageUrl={active.replace("thumbs", "images")} />}
+            </div>
           </div>
         </div>
       </div>
-      
+      <div className="fixed p-3 left-0 bottom-0 w-full text-center bg-blue-950">
+        <div className="flex overflow-x-auto overflow-hidden rounded-lg shadow-lg cursor-pointer ">
+          {visibleImages.map((url, index) => (
+            <Image
+              onClick={() => setActive(url)}
+              key={index}
+              src={url}
+              width={100}
+              height={100}
+              className={`rounded-lg shadow-lg h-auto m-1 object-cover w-32 ${active === url ? 'border-2 border-yellow-400' : ''}`}
+              alt={`Image ${startIndex + index + 1}`}
+            />
+          ))}
+        </div>
+        <div className="mt-2">
+          {/* ปุ่มเลื่อนหน้า */}
+          {currentPage > 0 && (
+            <button onClick={() => goToPage(currentPage - 1)} className="mr-2">
+              &lt; หน้าก่อนหน้า
+            </button>
+          )}
+          {images.length > endIndex && (
+            <button onClick={() => goToPage(currentPage + 1)}>
+              หน้าถัดไป &gt;
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
 
 export default Detection;
-
-// replace with your image URL

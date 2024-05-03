@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Card from "../components/Card";
@@ -19,9 +19,12 @@ export default function Home() {
       console.log("error", error);
     }
   };
-
+// const Initailize = useRef(false)
   useEffect(() => {
-    fetchProjects();
+    // if (!Initailize.current) {
+    //   Initailize.current = true
+      fetchProjects();
+    // }    
   }, []);
 
   return (

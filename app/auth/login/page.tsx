@@ -13,24 +13,18 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(`${process.env.BACK_URL}/login`, { username, password }, {withCredentials: true});
-      
+      const { data } = await axios.post(`${process.env.BACK_URL}/login`, { username, password }, {withCredentials: true});      
       setErrorMessage('');
-
-      Cookies.set('username', username)
       // Show success message
       alert('Sign in successful!');
-
       // Redirect to home page
       window.location='/project'
-      //router.push('/project')
     } catch (error) {
       // Handle error
       let alertmsg = error.response.data
       console.log(alertmsg.message)
       setErrorMessage(alertmsg.message)
-      // let label = document.getElementById("msg-login");
-      // label.innerHTML = alertmsg.message
+
     }
   };
 
