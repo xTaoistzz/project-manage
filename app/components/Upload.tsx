@@ -1,5 +1,4 @@
-"use client"
-// components/ImageUploader.js
+'use client';
 
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -30,10 +29,9 @@ const ImageUploader = ({ idproject, type }) => {
       const response = await axios.post(`${process.env.BACK_URL}/uploadImage`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
-        }, withCredentials:true,
+        }, withCredentials: true,
       });
       console.log('Upload successful:', response.data);
-      // Reset selectedFiles state after successful upload
       setSelectedFiles([]);
     } catch (error) {
       console.error('Error uploading images:', error);
