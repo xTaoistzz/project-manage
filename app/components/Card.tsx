@@ -18,9 +18,9 @@ const Card = ({ data }) => {
             <p className="text-gray-600 mb-3">{data.description}</p>
             <div className="flex flex-col">
                 <div className="grid grid-cols-1 gap-2">
-                    <button className=" bg-blue-500 text-white font-bold py-2 px-4 rounded">Classification</button>
-                    <button className=" bg-blue-500 text-white font-bold py-2 px-4 rounded" onClick={handleDetection}>Detection</button>
-                    <button className=" bg-blue-500 text-white font-bold py-2 px-4 rounded">Segmentation</button>
+                    <button className=" bg-gray-500 text-white font-bold py-2 px-4 rounded">Classification</button>
+                    <button className=" bg-gray-500 text-white font-bold py-2 px-4 rounded" onClick={handleDetection}>Detection</button>
+                    <button className=" bg-gray-500 text-white font-bold py-2 px-4 rounded">Segmentation</button>
                 </div>
                 <div className="grid grid-cols-2 gap-2 mt-2 justify-center">
                     <button className="bg-yellow-500 text-white font-bold py-2 px-4 rounded m-3 flex items-center justify-center" onClick={handleEditClick}><AiFillSetting className=" text-4xl"/></button>

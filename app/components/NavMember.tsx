@@ -28,19 +28,19 @@ const NavMember: React.FC = () => {
             className="flex items-center space-x-3 rtl:space-x-reverse"
           >
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-              AI Tool
+            AnTCV
             </span>
           </a>
           <div className="flex items-center space-x-6 rtl:space-x-reverse">
             <Link
-              href="/project"
+              href="/auth/register"
               className="text-sm  text-gray-500 dark:text-white hover:underline"
             >
-              Projects
+              Project
             </Link>
             <Link
-                onClick={handleLogout}
-              href="/"
+                // onClick={handleLogout}
+              href="/auth/login"
               className="text-sm  text-blue-600 dark:text-blue-500 hover:underline"
             >
               Logout

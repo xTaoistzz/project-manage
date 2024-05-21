@@ -19,12 +19,9 @@ export default function Home() {
       console.log("error", error);
     }
   };
-// const Initailize = useRef(false)
+
   useEffect(() => {
-    // if (!Initailize.current) {
-    //   Initailize.current = true
-      fetchProjects();
-    // }    
+    fetchProjects();
   }, []);
 
   return (
@@ -34,11 +31,11 @@ export default function Home() {
           <h1>Project</h1>
         </div>
         <div className="container mx-auto">
-          <div className="grid grid-cols-3 gap-4 p-3">
+          <div className="grid grid-cols-4 gap-4 m-5 sm:grid-cols-2">
             {data.map((card, index) => (
               <div
                 key={index}
-                className="card bg-white shadow-md rounded-lg p-3"
+                className="card bg-gray-300 shadow-md rounded-lg p-2"
               >
                 <Card data={card} />
               </div>

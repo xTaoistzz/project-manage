@@ -10,10 +10,10 @@ const Detection = dynamic(() => import('../../../components/Detection'), { ssr: 
 
 export default function MainDec( {params} ) {
   const [content, setContent] = useState('main');
-
+  console.log(params.id)
   return (
-    <div className="flex min-h-screen">
-      <aside className="w-64 bg-gray-800 text-white p-4">
+    <div className="flex min-h-screen bg-white">
+      <aside className="w-52 bg-gray-800 text-white p-4">
         <h1 className="text-2xl font-bold mb-4">Menu</h1>
         <ul>
           <li className="mb-2">
@@ -37,6 +37,14 @@ export default function MainDec( {params} ) {
               Annotate
             </button>
           </li>
+          <li className="mb-2">
+            <button
+              onClick={() => setContent('annotate')}
+              className="w-full text-left block p-2 rounded bg-gray-700 hover:bg-gray-600 transition duration-200"
+            >
+              Export
+            </button>
+          </li>
         </ul>
       </aside>
       <main className="flex-1 p-4">
@@ -51,7 +59,7 @@ export default function MainDec( {params} ) {
             </p>
           </>
         )}
-        {content === 'upload' && <ImageUploader idproject={params.id} type="Detection" />}
+        {content === 'upload' && <ImageUploader idproject={params.id} type="detection" />}
         {content === 'annotate' && <Detection idproject={params.id} />}
       </main>
     </div>

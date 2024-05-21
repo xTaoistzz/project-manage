@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@annotorious/annotorious": "^3.0.0-rc.23",
+    "@annotorious/react": "^3.0.0-rc.23",
     "@files-ui/react": "^1.2.4",
     "@prisma/client": "^5.11.0",
     "@tensorflow/tfjs": "^4.17.0",

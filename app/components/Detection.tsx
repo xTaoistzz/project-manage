@@ -46,7 +46,6 @@ const Detection = ({ idproject }) => {
         <div className="grid grid-cols-6 gap-6 w-full p-3 h-full">
           <div className="col-span-6 border-blue-950 border-8 flex justify-center items-center">
             <div className="text-center">
-              Show Image Section
               {active && (
                 <BoundingBox imageUrl={active.replace("thumbs", "images")} />
               )}
