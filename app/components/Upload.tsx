@@ -1,15 +1,18 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { useDropzone } from 'react-dropzone';
-import axios from 'axios';
+import { useState, useCallback } from "react";
+import { useDropzone } from "react-dropzone";
+import axios from "axios";
 
 const ImageUploader = ({ idproject, type }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
 
-  const onDrop = useCallback((acceptedFiles) => {
-    setSelectedFiles([...selectedFiles, ...acceptedFiles]);
-  }, [selectedFiles]);
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      setSelectedFiles([...selectedFiles, ...acceptedFiles]);
+    },
+    [selectedFiles]
+  );
 
   const removeFile = (index) => {
     const newFiles = [...selectedFiles];
@@ -22,29 +25,51 @@ const ImageUploader = ({ idproject, type }) => {
     selectedFiles.forEach((file, index) => {
       formData.append(`image`, file);
     });
-    formData.append('idproject', idproject);
-    formData.append('type', type);
+    formData.append("idproject", idproject);
+    formData.append("type", type);
 
     try {
-      const response = await axios.post(`${process.env.BACK_URL}/uploadImage`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }, withCredentials: true,
-      });
-      console.log('Upload successful:', response.data);
+      const response = await axios.post(
+        `${process.env.BACK_URL}/uploadImage`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+      console.log("Upload successful:", response.data);
       setSelectedFiles([]);
     } catch (error) {
-      console.error('Error uploading images:', error);
+      console.error("Error uploading images:", error);
     }
   };
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop, accept: 'image/*', multiple: true });
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: "image/*",
+    multiple: true,
+  });
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
-      <div className="p-4 border border-dashed border-gray-400 rounded-lg text-center" {...getRootProps()}>
+    <div className="min-h-screen flex flex-col items-center ">
+      {selectedFiles.length > 0 && (
+        <button
+          onClick={uploadFiles}
+          className=" bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 my-5 "
+        >
+          Upload Image
+        </button>
+      )}
+      <div
+        className="p-4 border border-dashed border-gray-400 rounded-lg text-center"
+        {...getRootProps()}
+      >
         <input {...getInputProps()} />
-        <p className="text-gray-600">Drag 'n' drop some images here, or click to select images</p>
+        <p className="text-gray-600">
+          Drag 'n' drop some images here, or click to select images
+        </p>
       </div>
 
       {selectedFiles.length > 0 && (
@@ -65,15 +90,6 @@ const ImageUploader = ({ idproject, type }) => {
             </div>
           ))}
         </div>
-      )}
-
-      {selectedFiles.length > 0 && (
-        <button
-          onClick={uploadFiles}
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Upload Images
-        </button>
       )}
     </div>
   );

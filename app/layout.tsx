@@ -3,9 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import NavMember from "./components/NavMember";
-import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -18,13 +16,25 @@ export default function RootLayout({
 }) {
   const [authenticated, setAuthenticated] = useState(false)
   useEffect(() => {
-    const isAuthenticated = axios.get(`http://localhost:5000/returnUsername`);
-    setAuthenticated(isAuthenticated);
+    const checkAuthentication = async () => {
+      try {
+        const response = await axios.get(`${process.env.BACK_URL}/returnUsername`, { withCredentials: true });
+        if (response.data) {
+          setAuthenticated(true);
+        } else {
+          setAuthenticated(false);
+        }
+      } catch (error) {
+        console.error("Error checking authentication:", error);
+        setAuthenticated(false);
+      }
+    };
+    checkAuthentication();
   }, []);
   return (
     <html lang="en">
       <body>
-        {authenticated ? <NavMember/>: <Navbar/>}
+        {authenticated ? <NavMember/>:<Navbar/> }
           {children}
         {/* <Footer/> */}
         </body>
