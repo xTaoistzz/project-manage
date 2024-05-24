@@ -26,10 +26,10 @@ const Register: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `${process.env.BACK_URL}/register`,
+        `http://localhost:5000/register`,
         formData
       );
-      console.log(response.data); // Handle success response
+      console.log(response); // Handle success response
       // Redirect to login page
       router.push("/auth/login");
     } catch (error) {

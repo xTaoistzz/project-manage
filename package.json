@@ -15,7 +15,7 @@
     "@prisma/client": "^5.11.0",
     "@recogito/annotorious": "^2.7.13",
     "@tensorflow/tfjs": "^4.17.0",
-    "axios": "^1.6.8",
+    "axios": "^1.7.2",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.4.5",
     "dropzone": "^6.0.0-beta.2",

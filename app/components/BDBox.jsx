@@ -1,18 +1,19 @@
-"use client";
+"use client"
 import React, { useEffect, useRef, useState } from 'react';
 import { Annotorious } from '@recogito/annotorious';
 import '@recogito/annotorious/dist/annotorious.min.css';
 import axios from 'axios';
+import Image from 'next/image';
 
-function App() {
+function ImageWithBoundingBox({ idproject, iddetection, imageUrl }) {
   const imgEl = useRef();
   const [anno, setAnno] = useState(null);
   const [annotations, setAnnotations] = useState([]);
   const [vocabulary, setVocabulary] = useState([]);
-  // Fetch class names
+
   const fetchClassNames = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/detection/class/97', { withCredentials: true });
+      const response = await axios.get(`http://localhost:5000/detection/class/${idproject}`, { withCredentials: true });
       setVocabulary(response.data.strClass);
     } catch (error) {
       console.error('Error fetching class names:', error);
@@ -21,7 +22,7 @@ function App() {
 
   const fetchBoundingBoxes = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/detection/bounding_box/388', { withCredentials: true });
+      const response = await axios.get(`http://localhost:5000/detection/bounding_box/${iddetection}`, { withCredentials: true });
       const data = response.data;
 
       if (anno) {
@@ -58,7 +59,7 @@ function App() {
         widgets: [
           {
             widget: 'TAG',
-            vocabulary: vocabulary, // Set vocabulary here
+            vocabulary: vocabulary,
           }
         ]
       });
@@ -108,14 +109,12 @@ function App() {
       setAnno(annotorious);
     }
 
-    // Cleanup: destroy current instance
     return () => annotorious?.destroy();
-  }, [vocabulary]); // Run effect when vocabulary changes
+  }, [vocabulary]);
 
-  // Fetch class names and bounding boxes when component mounts
-  useEffect(() => {
-    fetchClassNames();
-  }, []);
+  // useEffect(() => {
+  //   fetchClassNames();
+  // }, []);
 
   useEffect(() => {
     if (anno) {
@@ -125,8 +124,8 @@ function App() {
 
   const sendBoundingBoxToBackend = () => {
     const dataToSend = {
-      idproject: 97,
-      iddetection: 388,
+      idproject: idproject,
+      iddetection: iddetection,
       bounding_box: annotations.map(annotation => ({
         id: annotation.id,
         class_label: annotation.class_label,
@@ -145,22 +144,24 @@ function App() {
       },
       withCredentials: true,
     })
-    .then(response => {
-      console.log('Success:', response.data);
-      window.location.reload();
-    })
-    .catch(error => console.error('Error:', error));
+      .then(response => {
+        console.log('Success:', response.data);
+        window.location.reload();
+      })
+      .catch(error => console.error('Error:', error));
   };
 
   return (
     <div>
-      <button onClick={sendBoundingBoxToBackend}>Send Annotations to Backend</button>
-      <img 
-        ref={imgEl} 
-        src="http://localhost:5000/img/98/images/00000010.jpg" 
-        alt="Hallstatt Town Square" />
+      <button onClick={sendBoundingBoxToBackend} className='bg-blue-900'>Send Annotations to Backend</button>
+      <img
+      onLoad={() => {fetchClassNames(); fetchBoundingBoxes()}}
+        ref={imgEl}
+        src={imageUrl}
+        alt="Hallstatt Town Square"
+        style={{ cursor: 'crosshair' }} />
     </div>
   );
 }
 
-export default App;
+export default ImageWithBoundingBox;
