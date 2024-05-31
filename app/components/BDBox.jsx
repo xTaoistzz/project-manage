@@ -14,7 +14,7 @@ function ImageWithBoundingBox({ idproject, iddetection, imageUrl }) {
   const fetchClassNames = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/detection/class/${idproject}`,
+        `${process.env.BACK_URL}/detection/class/${idproject}`,
         { withCredentials: true }
       );
       setVocabulary(response.data.strClass);
@@ -26,7 +26,7 @@ function ImageWithBoundingBox({ idproject, iddetection, imageUrl }) {
   const fetchBoundingBoxes = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/detection/bounding_box/${iddetection}`,
+        `${process.env.BACK_URL}/detection/bounding_box/${iddetection}`,
         { withCredentials: true }
       );
       const data = response.data;
@@ -164,7 +164,7 @@ function ImageWithBoundingBox({ idproject, iddetection, imageUrl }) {
     };
 
     axios
-      .post("http://localhost:5000/create/detection/bounding_box", dataToSend, {
+      .post("${process.env.BACK_URL}/create/detection/bounding_box", dataToSend, {
         headers: {
           "Content-Type": "application/json",
         },

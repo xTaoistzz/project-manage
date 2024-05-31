@@ -1,20 +1,23 @@
 import { hostname } from 'os';
 
+import {} from 'dotenv/config'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     env: {
-        BACK_URL : 'http://localhost:5000'
+        BACK_URL : process.env.BACK_URL
     },
     images: {
         remotePatterns: [
         {
-            protocol: 'http',
-            hostname: 'localhost',
-            port: '5000',
+            protocol: process.env.BACK_URL_PROTOCOL,
+            hostname: process.env.BACK_DOMAIN,
+            port: process.env.BACK_URL_PORT,
             // pathname: `/img/**`  
         }
         ]
-    }
+    },
+
 };
 
 export default nextConfig;

@@ -18,7 +18,7 @@ const Detection = ({ idproject }) => {
     const fetchExternalImages = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/detection/allDetection/${idproject}`,
+          `${process.env.BACK_URL}/detection/allDetection/${idproject}`,
           { withCredentials: true }
         );
         const allData = res.data.detection
@@ -27,7 +27,7 @@ const Detection = ({ idproject }) => {
         const detec_path = allData.map(({ iddetection, image_path }) => ({ iddetection, image_path }))
         setnewData(detec_path)
         const pushUrlImg = allData.map((img) => {
-          return `http://localhost:5000/img/${idproject}/thumbs/${img.image_path}`;
+          return `${process.env.BACK_URL}/img/${idproject}/thumbs/${img.image_path}`;
         });
         setImages(pushUrlImg);
       } catch (error) {
@@ -83,6 +83,7 @@ const Detection = ({ idproject }) => {
               src={url}
               width={100}
               height={100}
+              unoptimized
               className={`rounded-lg shadow-lg h-auto m-1 object-cover w-32 ${active === url ? "border-2 border-yellow-400" : ""
                 }`}
               alt={`Image ${startIndex + index + 1}`}

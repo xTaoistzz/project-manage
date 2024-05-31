@@ -16,7 +16,7 @@ function ImageWithPolygon({ idproject, idsegmentation, imageUrl }) {
   const fetchClassNames = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/segmentation/class/${idproject}`,
+        `${process.env.BACK_URL}/segmentation/class/${idproject}`,
         { withCredentials: true }
       );
       setVocabulary(response.data.strClass);
@@ -29,7 +29,7 @@ function ImageWithPolygon({ idproject, idsegmentation, imageUrl }) {
   const fetchPolygon = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/segmentation/polygon/${idsegmentation}`,
+        `${process.env.BACK_URL}/segmentation/polygon/${idsegmentation}`,
         { withCredentials: true }
       );
       const data = response.data;
@@ -139,7 +139,7 @@ function ImageWithPolygon({ idproject, idsegmentation, imageUrl }) {
     };
 
     axios
-      .post("http://localhost:5000/create/segmentation/polygon", dataToSend, {
+      .post("${process.env.BACK_URL}/create/segmentation/polygon", dataToSend, {
         headers: {
           "Content-Type": "application/json",
         },

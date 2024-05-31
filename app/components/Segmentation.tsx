@@ -19,7 +19,7 @@ const Detection = ({ idproject }) => {
     const fetchExternalImages = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/segmentation/allSegmentation/${idproject}`,
+          `${process.env.BACK_URL}/segmentation/allSegmentation/${idproject}`,
           { withCredentials: true }
         );
         const allData = res.data.segmentation
@@ -28,7 +28,7 @@ const Detection = ({ idproject }) => {
         const segment_path = allData.map(({ idsegmentation, image_path }) => ({ idsegmentation, image_path }))
         setnewData(segment_path)
         const pushUrlImg = allData.map((img) => {
-          return `http://localhost:5000/img/${idproject}/thumbs/${img.image_path}`;
+          return `${process.env.BACK_URL}/img/${idproject}/thumbs/${img.image_path}`;
         });
         setImages(pushUrlImg);
       } catch (error) {
