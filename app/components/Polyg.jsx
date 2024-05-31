@@ -1,20 +1,22 @@
+//This is Component for Segmentations
+
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { Annotorious } from "@recogito/annotorious";
 import "@recogito/annotorious/dist/annotorious.min.css";
 import axios from "axios";
-import Image from "next/image";
 
-function ImageWithBoundingBox({ idproject, iddetection, imageUrl }) {
+function ImageWithPolygon({ idproject, idsegmentation, imageUrl }) {
   const imgEl = useRef();
   const [anno, setAnno] = useState(null);
   const [annotations, setAnnotations] = useState([]);
   const [vocabulary, setVocabulary] = useState([]);
 
+  // Fetch class names
   const fetchClassNames = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/detection/class/${idproject}`,
+        `http://localhost:5000/segmentation/class/${idproject}`,
         { withCredentials: true }
       );
       setVocabulary(response.data.strClass);
@@ -23,10 +25,11 @@ function ImageWithBoundingBox({ idproject, iddetection, imageUrl }) {
     }
   };
 
-  const fetchBoundingBoxes = async () => {
+  // Fetch bounding boxes
+  const fetchPolygon = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/detection/bounding_box/${iddetection}`,
+        `http://localhost:5000/segmentation/polygon/${idsegmentation}`,
         { withCredentials: true }
       );
       const data = response.data;
@@ -35,20 +38,11 @@ function ImageWithBoundingBox({ idproject, iddetection, imageUrl }) {
         anno.setAnnotations(data.annotation);
         const fetchedAnnotations = data.annotation.map((annotation) => {
           const shape = annotation.target.selector.value;
-          const [x, y, width, height] = shape
-            .split("=")[1]
-            .split(":")[1]
-            .split(",")
-            .map(Number);
+          const points = shape.match(/points="([^"]*)"/)[1];
 
           return {
             id: annotation.id,
-            x1: x,
-            y1: y,
-            x2: x + width,
-            y2: y + height,
-            width,
-            height,
+            points: points,
             class_label: annotation.body[0].value,
           };
         });
@@ -66,30 +60,23 @@ function ImageWithBoundingBox({ idproject, iddetection, imageUrl }) {
     if (imgEl.current) {
       annotorious = new Annotorious({
         image: imgEl.current,
+        tools: ["polygon"], // Specify only polygon tool
         widgets: [
           {
             widget: "TAG",
-            vocabulary: vocabulary,
+            vocabulary: vocabulary, // Set vocabulary here
           },
         ],
       });
-
+      annotorious.setDrawingTool("polygon");
       annotorious.on("createAnnotation", (annotation) => {
+        console.log(annotation);
         const shape = annotation.target.selector.value;
-        const [x, y, width, height] = shape
-          .split("=")[1]
-          .split(":")[1]
-          .split(",")
-          .map(Number);
+        const points = shape.match(/points="([^"]*)"/)[1];
 
         const newAnnotation = {
           id: annotation.id,
-          x1: x,
-          y1: y,
-          x2: x + width,
-          y2: y + height,
-          width,
-          height,
+          points: points,
           class_label: annotation.body[0].value,
         };
 
@@ -101,20 +88,11 @@ function ImageWithBoundingBox({ idproject, iddetection, imageUrl }) {
 
       annotorious.on("updateAnnotation", (annotation, previous) => {
         const shape = annotation.target.selector.value;
-        const [x, y, width, height] = shape
-          .split("=")[1]
-          .split(":")[1]
-          .split(",")
-          .map(Number);
+        const points = shape.match(/points="([^"]*)"/)[1];
 
         const updatedAnnotation = {
           id: annotation.id,
-          x1: x,
-          y1: y,
-          x2: x + width,
-          y2: y + height,
-          width,
-          height,
+          points: points,
           class_label: annotation.body[0].value,
         };
 
@@ -134,37 +112,34 @@ function ImageWithBoundingBox({ idproject, iddetection, imageUrl }) {
       setAnno(annotorious);
     }
 
+    // Cleanup: destroy current instance
     return () => annotorious?.destroy();
-  }, [vocabulary]);
+  }, [vocabulary]); // Run effect when vocabulary changes
 
-  // useEffect(() => {
-  //   fetchClassNames();
-  // }, []);
+  // Fetch class names and bounding boxes when component mounts
+  useEffect(() => {
+    fetchClassNames();
+  }, []);
 
   useEffect(() => {
     if (anno) {
-      fetchBoundingBoxes();
+      fetchPolygon();
     }
   }, [anno]);
 
-  const sendBoundingBoxToBackend = () => {
+  const sendPolygonToBackend = () => {
     const dataToSend = {
       idproject: idproject,
-      iddetection: iddetection,
-      bounding_box: annotations.map((annotation) => ({
+      idsegmentation: idsegmentation,
+      polygon: annotations.map((annotation) => ({
         id: annotation.id,
         class_label: annotation.class_label,
-        width: annotation.width,
-        height: annotation.height,
-        x1: annotation.x1,
-        x2: annotation.x2,
-        y1: annotation.y1,
-        y2: annotation.y2,
+        points: annotation.points,
       })),
     };
 
     axios
-      .post("http://localhost:5000/create/detection/bounding_box", dataToSend, {
+      .post("http://localhost:5000/create/segmentation/polygon", dataToSend, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -172,20 +147,20 @@ function ImageWithBoundingBox({ idproject, iddetection, imageUrl }) {
       })
       .then((response) => {
         console.log("Success:", response.data);
-        window.location.reload();
+        fetchPolygon();
       })
       .catch((error) => console.error("Error:", error));
   };
 
   return (
     <div>
-      <button onClick={sendBoundingBoxToBackend} className="bg-blue-900">
+      <button onClick={sendPolygonToBackend}>
         Send Annotations to Backend
       </button>
       <img
         onLoad={() => {
           fetchClassNames();
-          fetchBoundingBoxes();
+          fetchPolygon();
         }}
         ref={imgEl}
         src={imageUrl}
@@ -196,4 +171,4 @@ function ImageWithBoundingBox({ idproject, iddetection, imageUrl }) {
   );
 }
 
-export default ImageWithBoundingBox;
+export default ImageWithPolygon;
