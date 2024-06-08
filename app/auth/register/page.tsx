@@ -26,7 +26,7 @@ const Register: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:5000/register`,
+        `${process.env.BACK_URL}/register`,
         formData
       );
       console.log(response); // Handle success response
